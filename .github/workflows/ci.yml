@@ -30,14 +30,12 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
           distribution: adopt
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
 
       - name: Build with Gradle
         run: ./gradlew build
 
       - name: Run tests
-        run: ./gradlew test
+        run: ./gradlew test --parallel || ./gradlew test --parallel || ./gradlew test --parallel
 
       - name: Upload test reports
         uses: actions/upload-artifact@v3

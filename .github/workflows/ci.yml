@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    paths-ignore:
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README.md'
+
+jobs:
+  validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Validate the Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v3.4.2
+  build:
+    needs:
+      - validation
+    strategy:
+      matrix:
+        os: [ubuntu, macos, windows]
+        java-version: [21]
+    runs-on: ${{matrix.os}}-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: adopt
+      - name: build
+        run: ./gradlew build -x test
+      - name: test
+        run: ./gradlew test --parallel || ./gradlew test --parallel || ./gradlew test --parallel

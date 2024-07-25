@@ -3,6 +3,7 @@ package bookstore.management.repository
 import bookstore.management.entity.Author
 import bookstore.management.entity.Book
 import bookstore.management.entity.Genre
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -10,15 +11,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
 import java.time.Year
-import kotlin.test.assertEquals
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
 
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
-class BookRepositoryTest @Autowired constructor(
+class AllRepositoryTest @Autowired constructor(
     val bookRepository: BookRepository,
     val authorRepository: AuthorRepository,
     val genreRepository: GenreRepository
@@ -120,6 +118,77 @@ class BookRepositoryTest @Autowired constructor(
 
         val foundBook = bookRepository.findBookByIsbn("1405862335")
         assertNull(foundBook)
+
+    }
+
+    @Test
+    fun `should retrieve all authors that have written Thriller books`() {
+        val authors =
+            listOf(
+                Author(
+                    name = "a",
+                    surname = "1",
+                    birthdate = LocalDate.of(2001, 5, 22),
+                    city = "Edinburgh",
+                ),
+                Author(
+                name = "a",
+                surname = "2",
+                birthdate = LocalDate.of(1998, 7, 15),
+                city = "Edinburgh",
+                ),
+                Author(
+                    name = "a",
+                    surname = "3",
+                    birthdate = LocalDate.of(1859, 5, 22),
+                    city = "Edinburgh",
+                )
+            )
+        authorRepository.saveAll(authors)
+
+        val genres =
+            listOf(
+            Genre(name = "Noir"),
+            Genre(name = "Thriller"),
+            Genre(name = "Mystery")
+            )
+
+        genreRepository.saveAll(genres)
+
+        val books = bookRepository.saveAll(
+            setOf(
+                Book(
+                    isbn = "1",
+                    title = "book",
+                    price = 13.32,
+                    publicationYear = Year.of(1891),
+                    authors = setOf(authors[1], authors[2]),
+                    genres = setOf(genres[1])
+                ),
+                Book(
+                    isbn = "2",
+                    title = "book",
+                    price = 13.32,
+                    publicationYear = Year.of(1891),
+                    authors = setOf(authors[1]),
+                    genres = setOf(genres[0])
+                ),
+                Book(
+                isbn = "3",
+                title = "book",
+                price = 13.32,
+                publicationYear = Year.of(1891),
+                authors = setOf(authors[0]),
+                genres = setOf(genres[0])
+            )
+            )
+        )
+
+        val foundNoirAuthors = bookRepository.findAuthorsByBookGenre(genres[0].name)
+        val noirAuthors = listOf(authors[0], authors[1])
+        assertEquals(foundNoirAuthors.size, noirAuthors.size)
+        assertTrue(foundNoirAuthors.containsAll(noirAuthors))
+        assertFalse(foundNoirAuthors.contains(authors[2]))
 
     }
 }

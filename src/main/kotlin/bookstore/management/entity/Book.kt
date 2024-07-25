@@ -5,11 +5,11 @@ import java.time.Year
 
 @Entity
 @Table(name = "book")
-data class Book (
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+data class Book(
+    @Id
     val isbn: String,
     val title: String,
-    val price: Float,
+    val price: Double,
     val publicationYear: Year, //publication_year
     @ManyToMany
     @JoinTable( // JoinTable: viene utilizzato sulla proprietà di collezione del lato proprietario della relazione per specificare la tabella di join e le colonne di join.

@@ -1,22 +1,19 @@
 package bookstore.management.repository
 
-import bookstore.management.TestcontainersConfiguration
 import bookstore.management.entity.Author
-import jakarta.transaction.Transactional
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.jdbc.Sql
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
-import org.testcontainers.junit.jupiter.Testcontainers
-import java.time.LocalDate
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.context.ActiveProfiles
 
-@SpringJUnitConfig(TestcontainersConfiguration::class)
-@SpringBootTest
-@Sql(scripts = ["classpath:bookstore.sql"])
-@Testcontainers
-@Transactional //This ensures that the session remains open until the transaction completes2.
+import java.time.LocalDate
+import kotlin.jvm.optionals.getOrNull
+
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ActiveProfiles("test")
 class AuthorRepositoryTest @Autowired constructor(
     val authorRepository: AuthorRepository,
 ){
@@ -34,6 +31,12 @@ class AuthorRepositoryTest @Autowired constructor(
 
         val foundAuthor: Author = authorRepository.findById(author.id).get()
         assertEquals(author, foundAuthor)
+    }
 
+    @Test
+    fun `should not found any author with not existing id`() {
+
+        val foundAuthor: Author? = authorRepository.findById(-1234).getOrNull()
+        assertNull(foundAuthor)
     }
 }

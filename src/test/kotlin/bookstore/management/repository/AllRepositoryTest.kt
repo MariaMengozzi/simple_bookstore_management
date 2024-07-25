@@ -108,7 +108,7 @@ class AllRepositoryTest @Autowired constructor(
             )
         )
 
-        val foundBook = bookRepository.findBookByTitle("book")
+        val foundBook = bookRepository.findBooksByTitle("book")
 
         assertTrue(foundBook.containsAll(listOf(book1, book2)))
     }
@@ -184,7 +184,7 @@ class AllRepositoryTest @Autowired constructor(
             )
         )
 
-        val foundNoirAuthors = bookRepository.findAuthorsByBookGenre(genres[0].name)
+        val foundNoirAuthors = bookRepository.findAuthorsByBookGenre(genres[0].id)
         val noirAuthors = listOf(authors[0], authors[1])
         assertEquals(foundNoirAuthors.size, noirAuthors.size)
         assertTrue(foundNoirAuthors.containsAll(noirAuthors))

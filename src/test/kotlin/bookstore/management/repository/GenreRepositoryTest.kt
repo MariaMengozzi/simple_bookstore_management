@@ -30,4 +30,17 @@ class GenreRepositoryTest @Autowired constructor(
         assertTrue(foundGenres.containsAll(genres))
 
     }
+
+    @Test
+    fun `should find a genre by its name`(){
+        val genres: List<Genre> = listOf(
+            Genre(name = "Thriller"),
+            Genre(name = "Adventure"),
+            Genre(name = "Mystery")
+        )
+        genreRepository.saveAll(genres)
+
+        val foundGenre = genreRepository.findGenreByName(genres[1].name)
+        assertEquals(genres[1], foundGenre)
+    }
 }

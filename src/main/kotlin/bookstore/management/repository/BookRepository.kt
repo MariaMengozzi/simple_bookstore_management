@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository
 @Repository
 interface BookRepository : JpaRepository<Book, String>{
     fun findBookByIsbn(isbn: String): Book?
-    fun findBookByTitle(title: String): List<Book>
+    fun findBooksByTitle(title: String): List<Book>
     @Query(
         "SELECT DISTINCT a " +
                 "FROM Author a " +
                 "JOIN a.books b " +
                 "JOIN b.genres g " +
-                "WHERE g.name = :genre"
+                "WHERE g.id = :genre"
     )
-    fun findAuthorsByBookGenre(@Param("genre") genre: String): List<Author>}
+    fun findAuthorsByBookGenre(@Param("genre") genre: Long): List<Author>}

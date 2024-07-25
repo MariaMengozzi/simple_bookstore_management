@@ -57,7 +57,7 @@ class BookRepositoryTest @Autowired constructor(
             )
         )
 
-        val foundBook = bookRepository.findBookByTitle("book")
+        val foundBook = bookRepository.findBooksByTitle("book")
 
         assertTrue(foundBook.containsAll(listOf(book1, book2)))
     }

@@ -9,7 +9,7 @@ data class Author (
     val id: Long = 0,
     val name: String,
     val surname: String,
-    val birthdate: LocalDate,
+    val birthday: LocalDate,
     val city: String,
     @ManyToMany (mappedBy = "authors") //mappedBy: viene utilizzato sulla proprietà di collezione del lato inverso della relazione per indicare che la mappatura è gestita dal lato proprietario.
     val books: Set<Book> = HashSet()

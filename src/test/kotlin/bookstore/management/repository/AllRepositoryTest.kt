@@ -27,7 +27,7 @@ class AllRepositoryTest @Autowired constructor(
             Author(
                 name = "Arthur",
                 surname = "Conan Doyle",
-                birthdate = LocalDate.of(1859, 5, 22),
+                birthday = LocalDate.of(1859, 5, 22),
                 city = "Edinburgh",
             )
         )
@@ -63,7 +63,7 @@ class AllRepositoryTest @Autowired constructor(
             Author(
                 name = "a",
                 surname = "1",
-                birthdate = LocalDate.of(1859, 5, 22),
+                birthday = LocalDate.of(1859, 5, 22),
                 city = "Edinburgh",
             )
         )
@@ -72,7 +72,7 @@ class AllRepositoryTest @Autowired constructor(
             Author(
                 name = "a",
                 surname = "2",
-                birthdate = LocalDate.of(1859, 5, 22),
+                birthday = LocalDate.of(1859, 5, 22),
                 city = "Edinburgh",
             )
         )
@@ -128,19 +128,19 @@ class AllRepositoryTest @Autowired constructor(
                 Author(
                     name = "a",
                     surname = "1",
-                    birthdate = LocalDate.of(2001, 5, 22),
+                    birthday = LocalDate.of(2001, 5, 22),
                     city = "Edinburgh",
                 ),
                 Author(
                 name = "a",
                 surname = "2",
-                birthdate = LocalDate.of(1998, 7, 15),
+                birthday = LocalDate.of(1998, 7, 15),
                 city = "Edinburgh",
                 ),
                 Author(
                     name = "a",
                     surname = "3",
-                    birthdate = LocalDate.of(1859, 5, 22),
+                    birthday = LocalDate.of(1859, 5, 22),
                     city = "Edinburgh",
                 )
             )

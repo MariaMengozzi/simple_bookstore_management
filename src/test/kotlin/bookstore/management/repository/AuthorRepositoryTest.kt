@@ -24,7 +24,7 @@ class AuthorRepositoryTest @Autowired constructor(
             Author(
                 name = "Arthur",
                 surname = "Conan Doyle",
-                birthdate = LocalDate.of(1859, 5, 22),
+                birthday = LocalDate.of(1859, 5, 22),
                 city = "Edinburgh",
             )
         )

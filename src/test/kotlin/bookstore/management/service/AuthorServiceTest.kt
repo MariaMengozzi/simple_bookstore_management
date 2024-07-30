@@ -36,7 +36,7 @@ class AuthorServiceTest {
         val author =  Author(
             name = "Arthur",
             surname = "Conan Doyle",
-            birthdate = LocalDate.of(1859, 5, 22),
+            birthday = LocalDate.of(1859, 5, 22),
             city = "Edinburgh",
         )
 
@@ -57,7 +57,7 @@ class AuthorServiceTest {
         val author =  Author(
             name = "Arthur",
             surname = "Conan Doyle",
-            birthdate = LocalDate.of(1859, 5, 22),
+            birthday = LocalDate.of(1859, 5, 22),
             city = "Edinburgh",
         )
 
@@ -73,19 +73,19 @@ class AuthorServiceTest {
             Author(
                 name = "Arthur",
                 surname = "Conan Doyle",
-                birthdate = LocalDate.of(1859, 5, 22),
+                birthday = LocalDate.of(1859, 5, 22),
                 city = "Edinburgh",
             ),
             Author(
                 name = "Agatha",
                 surname = "Christie",
-                birthdate = LocalDate.of(1890, 9, 15),
+                birthday = LocalDate.of(1890, 9, 15),
                 city = "Torquay"
             ),
             Author(
                 name = "J.K.",
                 surname = "Rowling",
-                birthdate = LocalDate.of(1965, 7, 31),
+                birthday = LocalDate.of(1965, 7, 31),
                 city = "Yate"
             )
         )

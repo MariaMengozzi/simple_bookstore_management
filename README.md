@@ -17,3 +17,6 @@ Di ogni **autore** si vuole tenere traccia di un id, nome, cognome, data di nasc
 Di ogni **libro** si vuole tenere traccia del titolo, ISBN (identificativo), autore/i, categoria/e, anno di uscita e prezzo
 
 Di ogni **categoria** si tiene traccia del nome e un id
+
+Note:
+è necessario aver creato il db nel servizio di database, può anche essere vuoto, serve per la connessione

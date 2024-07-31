@@ -84,7 +84,7 @@ class GenreControllerTest @Autowired constructor(
     @Nested
     @DisplayName("POST: genre/")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class PostAuthor {
+    inner class PostGenre {
         @Test
         fun `should add a new genre`() {
 
@@ -114,7 +114,7 @@ class GenreControllerTest @Autowired constructor(
     @Nested
     @DisplayName("POST - ARGUMENT EXCEPTION: genre/")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class PostExistingAuthor {
+    inner class PostExistingGenre {
         @Test
         fun `should rise a illegal argument exception`() {
             // given
@@ -140,7 +140,7 @@ class GenreControllerTest @Autowired constructor(
     @Nested
     @DisplayName("PATCH: genre/")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class PatchAuthor {
+    inner class PatchGenre {
         @Test
         fun `should update a genre`() {
             // given
@@ -179,7 +179,7 @@ class GenreControllerTest @Autowired constructor(
     @Nested
     @DisplayName("PATCH - NOT FOUND: genre/")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class PatchNoFoundAuthor {
+    inner class PatchNoFoundGenre {
         @Test
         fun `should rise a not found exception due to updating a non existing genre`() {
             // given
@@ -207,7 +207,7 @@ class GenreControllerTest @Autowired constructor(
     @Nested
     @DisplayName("DELETE: /genre/{genreId}")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class DeleteAuthor {
+    inner class DeleteGenre {
         @Test
         fun `should delete the genre with the given id`() {
             val id = 2
@@ -229,7 +229,7 @@ class GenreControllerTest @Autowired constructor(
     @Nested
     @DisplayName("DELETE - NOT FOUND: /genre/{genreId}")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class DeleteNotFoundAuthor {
+    inner class DeleteNotFoundGenre {
         @Test
         fun `should rise a not found exception due to deleting a non existing genre`() {
             val id = -1

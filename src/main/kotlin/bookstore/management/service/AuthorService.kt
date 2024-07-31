@@ -19,7 +19,6 @@ class AuthorService (private val repository: AuthorRepository){
         } ?: repository.save(author)
 
     fun updateAuthor(author: Author): Author = repository.findByIdOrNull(author.id)?.let {
-        repository.deleteById(author.id)
         repository.save(author)
     } ?: throw NoSuchElementException("Could not find an author with id $author.id")
 

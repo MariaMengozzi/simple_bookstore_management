@@ -19,7 +19,6 @@ class GenreService (private val repository: GenreRepository){
         } ?: repository.save(genre)
 
     fun updateGenre(genre: Genre): Genre = repository.findByIdOrNull(genre.id)?.let {
-        repository.deleteById(genre.id)
         repository.save(genre)
     } ?: throw NoSuchElementException("Could not find a genre with id $genre.id")
 

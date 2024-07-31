@@ -24,10 +24,15 @@ class BookService (private val repository: BookRepository){
         } ?: repository.save(book)
 
     fun updateBook(book: Book): Book = repository.findBookByIsbn(book.isbn)?.let {
-        repository.deleteById(book.isbn)
         repository.save(book)
     } ?: throw NoSuchElementException("Could not find a book with account number $book.isbn")
 
     fun deleteBook(isbn: String): Unit = repository.findBookByIsbn(isbn)?.let { repository.deleteById(isbn) }
+        ?: throw NoSuchElementException("Could not find a book with isbn $isbn")
+
+    fun getBookAuthors(isbn: String): Collection<Author> = repository.findBookByIsbn(isbn)?.let { repository.findBookAuthors(isbn) }
+        ?: throw NoSuchElementException("Could not find a book with isbn $isbn")
+
+    fun getBookGenres(isbn: String): Collection<Genre> = repository.findBookByIsbn(isbn)?.let { repository.findBookGenres(isbn) }
         ?: throw NoSuchElementException("Could not find a book with isbn $isbn")
 }

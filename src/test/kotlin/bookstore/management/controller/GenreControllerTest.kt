@@ -1,6 +1,6 @@
 package bookstore.management.controller
 
-import bookstore.management.entity.Author
+import bookstore.management.entity.Genre
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -13,74 +13,67 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.*
-import java.time.LocalDate
 
 @SpringBootTest
 @Sql(scripts = ["classpath:sql/bookstore.sql"], executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @AutoConfigureMockMvc
-class AuthorControllerTest @Autowired constructor(
+class GenreControllerTest @Autowired constructor(
     val mockMvc: MockMvc,
     val objectMapper: ObjectMapper
 ) {
-    val baseUrl = "/author"
+    val baseUrl = "/genre"
 
     @Nested
-    @DisplayName("GET: author/")
+    @DisplayName("GET: genre/")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 
     inner class GetAuthors {
         @Test
-        fun `should return all authors`() {
+        fun `should return all genres`() {
 
             mockMvc.get(baseUrl)
                 .andDo{print()}
                 .andExpect{
                     status {isOk()}
                     content { contentType(MediaType.APPLICATION_JSON) }
-                    jsonPath("$[?(@.name =~ /Arthur|Agata|J.K|George/)]"){exists()}
+                    jsonPath("$[?(@.name =~ /Thriller|Adventure|Fantasy/)]"){exists()}
                 }
         }
     }
 
     @Nested
-    @DisplayName("GET: author/{authorId}")
+    @DisplayName("GET: genre/{genreId}")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class GetAuthor {
+    inner class GetGenre {
         @Test
-        fun `should return the author with id`() {
-            val author = Author(
+        fun `should return the genre with given id`() {
+            val genre = Genre(
                 id = 1,
-                name = "Arthur",
-                surname = "Conan Doyle",
-                birthday = LocalDate.of(1859, 5, 22),
-                city = "Edinburgh",
+                name = "Thriller"
             )
-            mockMvc.get(baseUrl + "/" + author.id)
+            mockMvc.get(baseUrl + "/" + genre.id)
                 .andDo{print()}
                 .andExpect{
                     status {isOk()}
                     content {
                         contentType(MediaType.APPLICATION_JSON)
-                        json(objectMapper.writeValueAsString(author))
+                        json(objectMapper.writeValueAsString(genre))
                     }
                 }
         }
     }
 
     @Nested
-    @DisplayName("GET - NOT FOUND: author/{authorId}")
+    @DisplayName("GET - NOT FOUND: genre/{genreId}")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class GetAuthorException {
+    inner class GetGenreException {
         @Test
-        fun `should rise not found exception due to not existing author id`() {
-            val author = Author(
+        fun `should rise not found exception due to not existing genre id`() {
+            val genre = Genre(
                 id = -1,
-                name = "Author",
-                surname = "Not existing",
-                birthday = LocalDate.of(1859, 5, 22),
-                city = "None",
+                name = "not existing"
             )
-            mockMvc.get(baseUrl + "/" + author.id)
+            mockMvc.get(baseUrl + "/" + genre.id)
                 .andDo{print()}
                 .andExpect{
                     status {isNotFound()}
@@ -89,59 +82,51 @@ class AuthorControllerTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("POST: author/")
+    @DisplayName("POST: genre/")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PostAuthor {
         @Test
-        fun `should add a new author`() {
+        fun `should add a new genre`() {
+
             // given
-            val newAuthor = Author(
-                id = 5,
-                name = "Federico",
-                surname = "Inverni",
-                birthday = LocalDate.of(1970, 9, 15),
-                city = "Rome",
+            val newGenre = Genre(
+                id = 4,
+                name = "Mystery"
             )
 
             val performPost =
                 mockMvc.post(baseUrl){
                 contentType = MediaType.APPLICATION_JSON
-                content = objectMapper.writeValueAsString(newAuthor)
+                content = objectMapper.writeValueAsString(newGenre)
             }
 
             performPost.andDo{print()}
             .andExpect{
                 status {isCreated()}
                 content {
-                    contentType(MediaType.APPLICATION_JSON) //confronto solo i dati dell'autore e non l'id
-                    jsonPath("$.name"){newAuthor.name}
-                    jsonPath("$.surname"){newAuthor.surname}
-                    jsonPath("$.birthday"){newAuthor.birthday}
-                    jsonPath("$.city"){newAuthor.city}
+                    contentType(MediaType.APPLICATION_JSON)
+                    json(objectMapper.writeValueAsString(newGenre))
                 }
             }
         }
     }
 
     @Nested
-    @DisplayName("POST - ARGUMENT EXCEPTION: author/")
+    @DisplayName("POST - ARGUMENT EXCEPTION: genre/")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PostExistingAuthor {
         @Test
         fun `should rise a illegal argument exception`() {
             // given
-            val stillExistingAuthor = Author(
-                id = 2,
-                name = "Federico",
-                surname = "Inverni",
-                birthday = LocalDate.of(1970, 9, 15),
-                city = "Rome",
+            val stillExistingGenre = Genre(
+                id = 1,
+                name = "Mystery"
             )
 
             val performPost =
                 mockMvc.post(baseUrl){
                     contentType = MediaType.APPLICATION_JSON
-                    content = objectMapper.writeValueAsString(stillExistingAuthor)
+                    content = objectMapper.writeValueAsString(stillExistingGenre)
                 }
 
             performPost
@@ -153,24 +138,21 @@ class AuthorControllerTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("PATCH: author/")
+    @DisplayName("PATCH: genre/")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PatchAuthor {
         @Test
-        fun `should update an author`() {
+        fun `should update a genre`() {
             // given
-            val updateAuthor = Author(
-                id = 2,
-                name = "Federico",
-                surname = "Inverni",
-                birthday = LocalDate.of(1970, 9, 15),
-                city = "Rome",
+            val updateGenre = Genre(
+                id = 1,
+                name = "Mystery"
             )
 
             val performPost =
                 mockMvc.patch(baseUrl){
                     contentType = MediaType.APPLICATION_JSON
-                    content = objectMapper.writeValueAsString(updateAuthor)
+                    content = objectMapper.writeValueAsString(updateGenre)
                 }
 
             performPost
@@ -180,40 +162,36 @@ class AuthorControllerTest @Autowired constructor(
                         status { isOk() }
                         content {
                             contentType(MediaType.APPLICATION_JSON)
-                            json(objectMapper.writeValueAsString(updateAuthor)) //we are checking the input that is in the body instead checking all single object property
+                            json(objectMapper.writeValueAsString(updateGenre))
                         }
                     }
                 }
 
-            //we verify that the bank is correctly updated using the route get > api/banks/{accountNum}
-            mockMvc.get("$baseUrl/${updateAuthor.id}")
+            mockMvc.get("$baseUrl/${updateGenre.id}")
                 .andExpect {
                     content {
-                        json(objectMapper.writeValueAsString(updateAuthor))
+                        json(objectMapper.writeValueAsString(updateGenre))
                     }
                 }
         }
     }
 
     @Nested
-    @DisplayName("PATCH - NOT FOUND: author/")
+    @DisplayName("PATCH - NOT FOUND: genre/")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PatchNoFoundAuthor {
         @Test
-        fun `should rise a not found exception due to updating a non existing author`() {
+        fun `should rise a not found exception due to updating a non existing genre`() {
             // given
-            val updateAuthor = Author(
+            val updateGenre = Genre(
                 id = -1,
-                name = "Federico",
-                surname = "Inverni",
-                birthday = LocalDate.of(1970, 9, 15),
-                city = "Rome",
+                name = "Mystery"
             )
 
             val performPost =
                 mockMvc.patch(baseUrl){
                     contentType = MediaType.APPLICATION_JSON
-                    content = objectMapper.writeValueAsString(updateAuthor)
+                    content = objectMapper.writeValueAsString(updateGenre)
                 }
 
             performPost
@@ -227,12 +205,12 @@ class AuthorControllerTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("DELETE: /author/{authorId}")
+    @DisplayName("DELETE: /genre/{genreId}")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class DeleteAuthor {
         @Test
-        fun `should delete the author with the given id`() {
-            val id = 3
+        fun `should delete the genre with the given id`() {
+            val id = 2
             //when/then
             mockMvc.delete("$baseUrl/$id")
                 .andDo{print()}
@@ -249,11 +227,11 @@ class AuthorControllerTest @Autowired constructor(
     }
 
     @Nested
-    @DisplayName("DELETE - NOT FOUND: /author/{authorId}")
+    @DisplayName("DELETE - NOT FOUND: /genre/{genreId}")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class DeleteNotFoundAuthor {
         @Test
-        fun `should rise a not found exception due to deleting a non existing author`() {
+        fun `should rise a not found exception due to deleting a non existing genre`() {
             val id = -1
             //when/then
             mockMvc.delete("$baseUrl/$id")
